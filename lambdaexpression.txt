@@ -1,0 +1,33 @@
+
+            //===============================================
+            IQueryable query = dbContext.const_plan;
+            string col = "req_division";
+            short val = 14;
+            var eParam = Expression.Parameter(typeof(const_plan));
+         //   ==============
+
+
+
+              Type[] exprArgTypes = { query.ElementType };
+              if (val != null)
+              {
+
+                  MemberExpression member = Expression.PropertyOrField(eParam, "req_division");
+                  LambdaExpression lambda = Expression.Lambda(Expression.Equal(member, Expression.Constant((short)14)), eParam);
+                  MethodCallExpression methodCall = Expression.Call(typeof(Queryable), "Where", exprArgTypes, query.Expression, lambda);
+                  IQueryable query1 = query.Provider.CreateQuery(methodCall);
+                 var temp1 = (IQueryable<Object>)query1;
+                 var temp2 = (IQueryable<Object>)query1;
+                 var queryall = temp1.Union(temp2);
+
+              }
+              if (val != null)
+              {
+                  MemberExpression member = Expression.PropertyOrField(eParam, "division");
+                  LambdaExpression lambda = Expression.Lambda(Expression.Equal(member, Expression.Constant((short)14)), eParam);
+                  MethodCallExpression methodCall = Expression.Call(typeof(Queryable), "Where", exprArgTypes, query.Expression, lambda);
+                  query = query.Provider.CreateQuery(methodCall);
+              }
+                
+
+              var result = ((IQueryable<Object>)query).Select(p=>new ConstPlan()).ToList();
